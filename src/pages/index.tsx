@@ -2,6 +2,7 @@ import { useGameLogic } from '../hooks/useGameLogic';
 import QuestionCard from '../components/QuestionCard';
 import Button from '../components/Button';
 import Head from 'next/head';
+import Navigation from '../components/Navigation';
 
 export default function Home() {
   const {
@@ -9,7 +10,8 @@ export default function Home() {
     percentages,
     selectedOption,
     nextQuestion,
-    handleOptionSelect
+    handleOptionSelect,
+    isClient
   } = useGameLogic();
 
   return (
@@ -20,6 +22,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <Navigation />
+      
       <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-5xl font-bold text-center text-gray-800 mb-12 animate-fade-in">
@@ -32,6 +36,7 @@ export default function Home() {
             selectedOption={selectedOption}
             onSelectOption={handleOptionSelect}
             onNextQuestion={nextQuestion}
+            isClient={isClient}
           />
         </div>
       </main>

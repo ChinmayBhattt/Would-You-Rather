@@ -12,6 +12,7 @@ interface QuestionCardProps {
   selectedOption: 'A' | 'B' | null;
   onSelectOption: (option: 'A' | 'B') => void;
   onNextQuestion: () => void;
+  isClient?: boolean;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -19,22 +20,23 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   percentages,
   selectedOption,
   onSelectOption,
-  onNextQuestion
+  onNextQuestion,
+  isClient = false
 }) => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (selectedOption) {
+    if (selectedOption && isClient) {
       timer = setTimeout(() => {
         onNextQuestion();
       }, 4000);
     }
     return () => clearTimeout(timer);
-  }, [selectedOption, onNextQuestion]);
+  }, [selectedOption, onNextQuestion, isClient]);
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl mx-auto animate-fade-in transform hover:scale-[1.02] transition-all duration-300">
       <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-scale-in bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-        Would You Rather...
+       Pick Your Poison...
       </h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -44,10 +46,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           }`}
         >
           <Button
-            onClick={() => !selectedOption && onSelectOption('A')}
+            onClick={() => isClient && !selectedOption && onSelectOption('A')}
             isSelected={selectedOption === 'A'}
             className="h-full w-full min-h-[150px] text-xl"
-            disabled={selectedOption !== null}
+            disabled={!isClient || selectedOption !== null}
           >
             {question.optionA}
           </Button>
@@ -59,17 +61,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           }`}
         >
           <Button
-            onClick={() => !selectedOption && onSelectOption('B')}
+            onClick={() => isClient && !selectedOption && onSelectOption('B')}
             isSelected={selectedOption === 'B'}
             className="h-full w-full min-h-[150px] text-xl"
-            disabled={selectedOption !== null}
+            disabled={!isClient || selectedOption !== null}
           >
             {question.optionB}
           </Button>
         </div>
       </div>
 
-      {selectedOption && (
+      {selectedOption && isClient && (
         <div className="mt-12 animate-fade-in">
           <PercentageDisplay
             optionAPercentage={percentages.optionAPercentage}

@@ -3,6 +3,7 @@ import QuestionCard from '../components/QuestionCard';
 import Button from '../components/Button';
 import Head from 'next/head';
 import Navigation from '../components/Navigation';
+import Ad from '../components/Ad';
 
 export default function Home() {
   const {
@@ -11,7 +12,8 @@ export default function Home() {
     selectedOption,
     nextQuestion,
     handleOptionSelect,
-    isClient
+    isClient,
+    isLoading
   } = useGameLogic();
 
   return (
@@ -37,7 +39,20 @@ export default function Home() {
             onSelectOption={handleOptionSelect}
             onNextQuestion={nextQuestion}
             isClient={isClient}
+            isLoading={isLoading}
           />
+
+          <div className="mt-8">
+            <Ad slot="your-ad-slot-id" format="auto" />
+          </div>
+
+          <div className="flex justify-center mt-8">
+            <Button
+              label="Next Question"
+              onClick={nextQuestion}
+              isLoading={isLoading}
+            />
+          </div>
         </div>
       </main>
     </>
